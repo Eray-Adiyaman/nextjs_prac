@@ -2,7 +2,7 @@ import Image from "next/image"
 import Link from "next/link"
 import Logo from "./logo.png"
 
-export default function Navbar() {
+export default function Navbar({ user }) {
   return (
     <nav>
         <Image 
@@ -16,6 +16,7 @@ export default function Navbar() {
           <Link href="/" >Dashboard </Link>
           <Link href="/tickets" >Tickets</Link>
           <Link className="mx-auto" href="/tickets/create">Create Ticket</Link>
+        {user && <span>Hello, {user.email}</span>}
     </nav>
   )
 }
