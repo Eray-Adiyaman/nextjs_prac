@@ -1,6 +1,7 @@
 import Image from "next/image"
 import Link from "next/link"
 import Logo from "./logo.png"
+import LogoutButton from "./LogoutButton"
 
 export default function Navbar({ user }) {
   return (
@@ -17,6 +18,7 @@ export default function Navbar({ user }) {
           <Link href="/tickets" >Tickets</Link>
           <Link className="mx-auto" href="/tickets/create">Create Ticket</Link>
         {user && <span>Hello, {user.email}</span>}
+        <LogoutButton />
     </nav>
   )
 }
