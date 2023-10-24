@@ -24,8 +24,10 @@ export default function Login() {
     if(error){
       setError(error.message)
     }
-    if(!error){}
+    if(!error){
       router.push("/")
+    }
+
   }
 
   return (
