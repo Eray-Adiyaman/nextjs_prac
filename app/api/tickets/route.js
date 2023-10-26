@@ -1,27 +1,24 @@
-// to note that all request can be done inside the server components and this routes are redundant but can be useful for future if i need them inside client components and ofc for practice purposes
-import { NextResponse } from "next/server";
+import { NextResponse } from "next/server"
+import { cookies } from 'next/headers'
+import { createRouteHandlerClient } from "@supabase/auth-helpers-nextjs"
 
-export const dynamic = "force-dynamic"
+export async function POST(request) {
+  const ticket = await request.json()
 
-export async function GET() {
-    const res = await fetch("http://localhost:4000/tickets")
+  // get supabase instance
+  const supabase = createRouteHandlerClient({ cookies })
 
-    const tickets = await res.json();
+  // get current user session
+  const { data: { session } } = await supabase.auth.getSession()
 
-    return NextResponse.json(tickets,{ status:200 })
-}
-
-export async function POST(request) { 
-    const ticket = await request.json();
-
-
-    const res = await fetch("http://localhost:4000/tickets",{
-        method: "POST",
-        headers: { "Content-Type": "application/json"},
-        body: JSON.stringify(ticket)
+  // insert the data
+  const { data, error } = await supabase.from('Tickets')
+    .insert({
+      ...ticket,
+      user_email: session.user.email,
     })
+    .select()
+    .single()
 
-    const newTicket = await res.json();
-
-    return NextResponse.json(newTicket, { status: 201 })
+  return NextResponse.json({ data, error })
 }

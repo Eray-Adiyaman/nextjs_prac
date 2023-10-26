@@ -16,7 +16,7 @@ export default function Login() {
     setError("")
 
     const supabase= createClientComponentClient()
-    const { error } = supabase.auth.signInWithPassword({
+    const { error } = await supabase.auth.signInWithPassword({
       email,
       password
     })

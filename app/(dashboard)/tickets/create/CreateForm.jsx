@@ -9,7 +9,7 @@ export default function CreateForm() {
 
     const [title,setTitle] = useState("");  
     const [body,setBody] = useState("");  
-    const [priority,setPriortiy] = useState("low");  
+    const [priority,setPriority] = useState("low");  
     const [isLoading,setIsLoading] = useState(false);
 
 
@@ -17,17 +17,20 @@ export default function CreateForm() {
         e.preventDefault();
         setIsLoading(true);
 
-        const ticket = {
-            title,body,priority,user_email:"mail@dev"
+        const newTicket = {
+            title,body,priority
         }
 
-        const res = await fetch("http://localhost:4000/tickets",{
+        const res = await fetch("http://localhost:3000/api/tickets",{
             method: "POST",
-            headers: { "Content-Type": "application/json"},
-            body: JSON.stringify(ticket)
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(newTicket)
         })
 
-        if(res.status === 201) {
+        const json = await res.json()
+
+      
+        if(json.data){
             router.refresh()
             router.push("/tickets")
         }
@@ -56,7 +59,7 @@ export default function CreateForm() {
             <label>
                 <span>Priority</span>
                 <select 
-                    onChange={(e)=> setPriortiy(e.target.value)}
+                    onChange={(e)=> setPriority(e.target.value)}
                     value={priority}
                 >
                     <option value="low">Low Priority</option>
